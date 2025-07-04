@@ -1,6 +1,7 @@
 import Image from "next/image";
 import localFont from "next/font/local";
 import Link from "next/link";
+import TypingComponent from "./component/Typed/page.js";
 // import { Poppins } from "next/font/google";
 const poppins = localFont({
   src: "./fonts/Poppins-ExtraBold.ttf",
@@ -20,6 +21,7 @@ export default function Home() {
             your long URL into the input box , Click the "Shorten It!" button to
             generate a short link.
           </p>
+          <TypingComponent/>
           <div className="gap-4 flex p-4">
             <Link href="/generate">
               <button className="bg-sky-400 px-2 py-1 cursor-pointer font-bold rounded-2xl">
