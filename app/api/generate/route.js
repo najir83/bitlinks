@@ -1,46 +1,45 @@
-import clientPromise from "@/lib/mongodb";
+// app/api/generate/route.js
+
+import dbConnect from "@/lib/mongodb"; // <-- make sure you have this file set up
+import URL from "@/models/shortUrl.js";
+
 export async function POST(request) {
+  await dbConnect(); // connect to MongoDB using Mongoose
+
   const body = await request.json();
-  const client = await clientPromise;
-  const db = client.db("bitlinks");
-  const collection = db.collection("url");
-  const doc = await collection.findOne({ shorturl: body.shorturl });
-  //   console.log(doc);
-  console.log(body);
-  if (doc && doc.url !== body.url) {
-    // return Response.json({ status: 250, message: "short url already present" });
+
+  const { url, shorturl } = body;
+  // console.log(url, shorturl);
+
+  if (!url || !shorturl) {
+    return new Response(JSON.stringify({ message: "Missing fields" }), {
+      status: 400,
+      headers: { "Content-Type": "application/json" },
+    });
+  }
+
+  // Check if short URL already exists
+  const existing = await URL.findOne({ shorturl });
+
+  if (existing && existing.url !== url) {
     return new Response(
-      JSON.stringify({ message: "short url already exits" }),
+      JSON.stringify({ message: "Short URL already exists" }),
       {
         status: 409,
-        headers: {
-          "Content-Type": "Application/json",
-        },
+        headers: { "Content-Type": "application/json" },
       }
     );
   }
-  //   if(collection){
 
-  //   }
-  if (!doc) {
-    const res = await collection.insertOne({
-      url: body.url,
-      shorturl: body.shorturl,
-    });
+  if (!existing) {
+    await URL.create({ url, shorturl });
   }
+
   return new Response(
-    JSON.stringify({ message: "url generated successfully" }),
+    JSON.stringify({ message: "URL generated successfully" }),
     {
       status: 201,
-      headers: {
-        "Content-Type": "Application/json",
-      },
+      headers: { "Content-Type": "application/json" },
     }
   );
-  //   return Response.json({
-  //     message: "url generated successfully",
-  //     success: true,
-  //   });
 }
-
-export async function GET(request) {}

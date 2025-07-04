@@ -1,5 +1,10 @@
+// app/Footer.js or wherever
+"use client";
+
 import React from "react";
 import Link from "next/link";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faGithub, faLinkedin } from "@fortawesome/free-brands-svg-icons";
 
 const Footer = () => {
   return (
@@ -18,14 +23,16 @@ const Footer = () => {
           href="https://www.linkedin.com/in/sk-najir-0b0177285/"
           target="_blank"
           rel="noopener noreferrer"
-          className="fa-brands text-2xl lg:text-3xl fa-linkedin"
-        ></Link>
+        >
+          <FontAwesomeIcon icon={faLinkedin} className="text-2xl lg:text-3xl" />
+        </Link>
         <Link
           href="https://github.com/najir83"
           target="_blank"
           rel="noopener noreferrer"
-          className="fa-brands text-2xl lg:text-3xl fa-github"
-        ></Link>
+        >
+          <FontAwesomeIcon icon={faGithub} className="text-2xl lg:text-3xl" />
+        </Link>
       </div>
     </footer>
   );

@@ -2,6 +2,9 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import NavBar from "./component/NavBar/page";
 import Footer from "./component/Footer";
+// app/layout.js or pages/_app.js
+import '@fortawesome/fontawesome-free/css/all.min.css';
+
 
 const geistSans = Geist({
   variable: "--font-geist-sans",

@@ -1,12 +1,13 @@
 import { redirect } from "next/navigation";
-import clientPromise from "@/lib/mongodb";
+import dbConnect from "@/lib/mongodb"; // <-- make sure you have this file set up
+import URL from "@/models/shortUrl.js";
+
 export default async function Page({ params }) {
   const shorturl = (await params).shorturl;
-  const client = await clientPromise;
-  const db = client.db("bitlinks");
-  const collection = db.collection("url");
-  const doc = await collection.findOne({ shorturl: shorturl });
-  //   console.log(doc);
+  await dbConnect();
+
+  const doc = await URL.findOne({ shorturl: shorturl });
+  console.log(doc);
   if (doc) {
     redirect(`${doc.url}`);
   } else {
