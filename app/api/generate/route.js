@@ -1,45 +1,34 @@
 // app/api/generate/route.js
 
-import dbConnect from "@/lib/mongodb"; // <-- make sure you have this file set up
-import URL from "@/models/shortUrl.js";
+import dbConnect from "@/lib/mongodb";
+import URL from "@/models/shortUrl";
 
 export async function POST(request) {
-  await dbConnect(); // connect to MongoDB using Mongoose
+  try {
+    await dbConnect();
 
-  const body = await request.json();
+    const { url, shorturl } = await request.json();
 
-  const { url, shorturl } = body;
-  // console.log(url, shorturl);
-
-  if (!url || !shorturl) {
-    return new Response(JSON.stringify({ message: "Missing fields" }), {
-      status: 400,
-      headers: { "Content-Type": "application/json" },
-    });
-  }
-
-  // Check if short URL already exists
-  const existing = await URL.findOne({ shorturl });
-
-  if (existing && existing.url !== url) {
-    return new Response(
-      JSON.stringify({ message: "Short URL already exists" }),
-      {
-        status: 409,
-        headers: { "Content-Type": "application/json" },
-      }
-    );
-  }
-
-  if (!existing) {
-    await URL.create({ url, shorturl });
-  }
-
-  return new Response(
-    JSON.stringify({ message: "URL generated successfully" }),
-    {
-      status: 201,
-      headers: { "Content-Type": "application/json" },
+    if (!url || !shorturl) {
+      return Response.json({ message: "Missing fields" }, { status: 400 });
     }
-  );
+
+    // Check if shorturl already exists
+    const existing = await URL.findOne({ shorturl });
+
+    if (existing && existing.url !== url) {
+      return Response.json({ message: "Short URL already exists" }, { status: 409 });
+    }
+
+    // If not found, create new entry
+    if (!existing) {
+      await URL.create({ url, shorturl });
+    }
+
+    return Response.json({ message: "Short URL created successfully" }, { status: 201 });
+
+  } catch (error) {
+    console.error("Error in /api/generate:", error);
+    return Response.json({ message: "Server error" }, { status: 500 });
+  }
 }

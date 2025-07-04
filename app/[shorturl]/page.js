@@ -7,7 +7,7 @@ export default async function Page({ params }) {
   await dbConnect();
 
   const doc = await URL.findOne({ shorturl: shorturl });
-  console.log(doc);
+  // console.log(doc);
   if (doc) {
     redirect(`${doc.url}`);
   } else {
