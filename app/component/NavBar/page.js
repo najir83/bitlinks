@@ -27,7 +27,7 @@ const NavBar = () => {
   return (
     <nav className="text-white relative flex flex-col justify-center h-[8vh] bg-blue-500">
       <div className="flex justify-between px-4 items-center">
-        <div className="font-bold text-xl">BitLinks</div>
+        <Link href="/" className="font-bold text-xl">BitLinks</Link>
         <ul hidden={isMobile} className="flex space-x-5">
           {["/", "/about", "/shorten", "/contact"].map((path, i) => {
             const label = ["Home", "About", "Shorten", "Contact Us"][i];
@@ -46,14 +46,14 @@ const NavBar = () => {
         </ul>
         <ul className="flex gap-5">
           <li>
-            <Link href="/generate">
+            <Link href="/shorten">
               <button className="bg-sky-400 px-2 py-1 lg:px-3 lg:py-2 hover:bg-blue-700 cursor-pointer font-bold rounded-2xl">
                 Try Now
               </button>
             </Link>
           </li>
           <li>
-            <Link href="/github">
+            <Link target="_blank" href="https://github.com/najir83/">
               <button className="bg-white text-black fa-brands text-2xl lg:text-3xl fa-github   cursor-pointer rounded-full">
                 {/* Github */}
               </button>

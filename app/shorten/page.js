@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
 import React, { useState } from "react";
+import { toast, Bounce } from "react-toastify";
 
 const Page = () => {
   const [url, setUrl] = useState("");
@@ -35,12 +36,34 @@ const Page = () => {
         // console.log(result);
         // alert(result.message);
         setGenerate(shortUrl);
+        setGenerating(0);
+        setUrl("");
+        setShortUrl("");
+        toast.success("Shorten url generated successfully", {
+          position: "top-right",
+          autoClose: 2500,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: Bounce,
+        });
       })
-      .catch((error) => console.error(error));
-    setGenerating(0);
-
-    setUrl("");
-    setShortUrl("");
+      .catch((error) =>
+        toast.error("Internal Server Error", {
+          position: "top-right",
+          autoClose: 2500,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: Bounce,
+        })
+      );
   };
   const randomHandle = () => {
     const chars = "abcdefghijklmnopqrstuvwxyz";
@@ -80,6 +103,7 @@ const Page = () => {
         )}
 
         <button
+          disabled={generating}
           onClick={generateUrl}
           className="bg-green-500 cursor-pointer py-3  hover:bg-green-600  hover:text-lg rounded-2xl px-10 text-white font-semibold m-3"
         >

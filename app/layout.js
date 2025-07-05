@@ -2,9 +2,10 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import NavBar from "./component/NavBar/page";
 import Footer from "./component/Footer";
-// app/layout.js or pages/_app.js
-import '@fortawesome/fontawesome-free/css/all.min.css';
+import { ToastContainer, Bounce } from "react-toastify";
 
+// app/layout.js or pages/_app.js
+import "@fortawesome/fontawesome-free/css/all.min.css";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,10 +32,28 @@ export default function RootLayout({ children }) {
           crossOrigin="anonymous"
           async
         ></script>
+        <link
+          rel="icon"
+          href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120"><circle cx="60" cy="60" r="60" fill="white"/><text x="10" y="95" font-size="100">☯</text></svg>'
+        />
       </head>
-      <body data-theme={'light'}
+      <body
+        data-theme={"light"}
         className={`${geistSans.variable} bg-purple-50         ${geistMono.variable} antialiased`}
       >
+        <ToastContainer
+          position="top-right"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick={false}
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+          transition={Bounce}
+        />
         <NavBar />
 
         {children}

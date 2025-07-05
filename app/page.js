@@ -1,7 +1,11 @@
+"use client";
 import Image from "next/image";
 import localFont from "next/font/local";
 import Link from "next/link";
 import TypingComponent from "./component/Typed/page.js";
+import { toast, Bounce } from "react-toastify";
+import { useEffect } from "react";
+
 // import { Poppins } from "next/font/google";
 const poppins = localFont({
   src: "./fonts/Poppins-ExtraBold.ttf",
@@ -9,6 +13,7 @@ const poppins = localFont({
   // weight: "100 900",
 });
 export default function Home() {
+ 
   return (
     <main className=" bg-purple-100  overflow-auto ">
       <section className="grid lg:grid-cols-2 grid-rows-2">
@@ -21,15 +26,15 @@ export default function Home() {
             your long URL into the input box , Click the "Shorten It!" button to
             generate a short link.
           </p>
-          <TypingComponent/>
+          <TypingComponent />
           <div className="gap-4 flex p-4">
-            <Link href="/generate">
+            <Link href="/shorten">
               <button className="bg-sky-400 px-2 py-1 cursor-pointer font-bold rounded-2xl">
                 Try Now
               </button>
             </Link>
 
-            <Link href="/github">
+            <Link target="_blank" href="https://github.com/najir83/bitlinks">
               <button className="bg-sky-400 px-2 py-1 font-bold cursor-pointer rounded-2xl">
                 Github
               </button>
