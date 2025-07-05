@@ -16,12 +16,11 @@ export async function POST(req) {
   });
 
   const mailOptions = {
-    from: email,
-    to: process.env.EMAIL,
+    from: `"Bitlinks Contact" <${process.env.EMAIL}>`, 
+    to: process.env.EMAIL, // You (the receiver)
     subject: `Contact Form Message from ${name}`,
-    text: `You received a new message:\n\nName: ${name}\nEmail: ${email}\nMessage:\n${message}`,
+    text: `You received a new message from Bitlinks:\n\nName: ${name}\nEmail: ${email}\nMessage:\n${message}`,
   };
-
   try {
     await transporter.sendMail(mailOptions);
     return new Response("Message sent successfully", { status: 200 });
