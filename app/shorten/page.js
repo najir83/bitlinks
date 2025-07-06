@@ -9,37 +9,56 @@ const Page = () => {
   const [generate, setGenerate] = useState(false);
   const [showRandom, setShowRandom] = useState(1);
   const [generating, setGenerating] = useState(0);
-  const generateUrl = () => {
-    const myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
-
+  const generateUrl = async () => {
+    if (!url || !shortUrl) {
+      toast.warn("All fields are required", {
+        position: "top-right",
+        autoClose: 2500,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
+      return;
+    }
     const raw = JSON.stringify({
       url: url,
       shorturl: shortUrl,
     });
-
-    if (!url || !shortUrl) {
-      alert("All fields are required");
-      return;
-    }
     setGenerating(1);
-    const requestOptions = {
-      method: "POST",
-      headers: myHeaders,
-      body: raw,
-      redirect: "follow",
-    };
 
-    fetch(`${process.env.NEXT_PUBLIC_HOST}/api/generate`, requestOptions)
-      .then((response) => response.json())
-      .then((result) => {
-        // console.log(result);
-        // alert(result.message);
-        setGenerate(shortUrl);
-        setGenerating(0);
-        setUrl("");
-        setShortUrl("");
-        toast.success("Shorten url generated successfully", {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/generate`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: raw,
+    });
+    if (res.ok) {
+      setGenerate(shortUrl);
+      setGenerating(0);
+      setUrl("");
+      setShortUrl("");
+      toast.success("Shorten url generated successfully", {
+        position: "top-right",
+        autoClose: 2500,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
+    } else {
+      // const data = await res.json();
+      // console.log(data);
+      toast.error(
+        res.status == 409
+          ? `Short url "${shortUrl}" is not available`
+          : "Internal Server Error",
+        {
           position: "top-right",
           autoClose: 2500,
           hideProgressBar: false,
@@ -49,21 +68,58 @@ const Page = () => {
           progress: undefined,
           theme: "light",
           transition: Bounce,
-        });
-      })
-      .catch((error) =>
-        toast.error("Internal Server Error", {
-          position: "top-right",
-          autoClose: 2500,
-          hideProgressBar: false,
-          closeOnClick: false,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-          transition: Bounce,
-        })
+        }
       );
+      // console.log(res);
+      setGenerate("");
+      setGenerating(0);
+      setUrl("");
+      setShortUrl("");
+    }
+    // const myHeaders = new Headers();
+    // myHeaders.append("Content-Type", "application/json");
+
+    // const requestOptions = {
+    //   method: "POST",
+    //   headers: myHeaders,
+    //   body: raw,
+    //   redirect: "follow",
+    // };
+
+    // fetch(`${process.env.NEXT_PUBLIC_HOST}/api/generate`, requestOptions)
+    //   .then((response) => response.json())
+    //   .then((result) => {
+    //     // console.log(result);
+    //     // alert(result.message);
+    //     setGenerate(shortUrl);
+    //     setGenerating(0);
+    //     setUrl("");
+    //     setShortUrl("");
+    //     toast.success("Shorten url generated successfully", {
+    //       position: "top-right",
+    //       autoClose: 2500,
+    //       hideProgressBar: false,
+    //       closeOnClick: false,
+    //       pauseOnHover: true,
+    //       draggable: true,
+    //       progress: undefined,
+    //       theme: "light",
+    //       transition: Bounce,
+    //     });
+    //   })
+    //   .catch((error) =>
+    //     toast.error("Internal Server Error", {
+    //       position: "top-right",
+    //       autoClose: 2500,
+    //       hideProgressBar: false,
+    //       closeOnClick: false,
+    //       pauseOnHover: true,
+    //       draggable: true,
+    //       progress: undefined,
+    //       theme: "light",
+    //       transition: Bounce,
+    //     })
+    //   );
   };
   const randomHandle = () => {
     const chars = "abcdefghijklmnopqrstuvwxyz";
